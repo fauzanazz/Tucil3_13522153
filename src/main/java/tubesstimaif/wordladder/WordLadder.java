@@ -12,6 +12,7 @@ import java.io.IOException;
  */
 public class WordLadder {
     public static void main(String[] args) throws IOException {
+        MapParser.load();
         MainWindowsUI ui = new MainWindowsUI();
         ui.setVisible(true);
     }

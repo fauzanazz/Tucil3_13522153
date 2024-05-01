@@ -4,6 +4,8 @@
  */
 package tubesstimaif.wordladder;
 
+import java.util.List;
+
 /**
  *
  * @author Ojan
@@ -11,4 +13,29 @@ package tubesstimaif.wordladder;
 public class Result {
     public int executionTime;
     public int memory;
+    public List<String> path;
+    public int nodeAccessed;
+
+    public Result(int executionTime, int memory, List<String> path, int nodeAccessed){
+        this.executionTime = executionTime;
+        this.memory = memory;
+        this.path = path;
+        this.nodeAccessed = nodeAccessed;
+    }
+
+    public String[] getPath() {
+        return path.toArray(new String[0]);
+    }
+
+    public int getTime() {
+        return executionTime;
+    }
+
+    public int getMemory() {
+        return memory;
+    }
+
+    public int getNodeAccessed(){
+        return nodeAccessed;
+    }
 }

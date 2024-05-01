@@ -4,15 +4,14 @@
  */
 package tubesstimaif.wordladder;
 
-import java.io.IOException;
-
 /**
  *
  * @author Ojan
  */
 public class MainWindowsUI extends javax.swing.JFrame {
 
-    private final inputChecker checker = new inputChecker();
+    private MapParser mapParser = new MapParser();
+
 
     /**
      * Creates new form MainWindowsUI
@@ -214,18 +213,27 @@ public class MainWindowsUI extends javax.swing.JFrame {
 
         // Check if the input is valid
         try {
-            if (checker.checkInput(start, end)) {
-                // If the input is valid, then proceed to the next step
-            } else {
-                // If the input is invalid, then show an error message
-                ErrorWindow errorWindow = new ErrorWindow(this, false);
-                errorWindow.setErrorMessage("Invalid input");
-                errorWindow.setVisible(true);
+            if (!MapParser.isWordExist(start) || !MapParser.isWordExist(end)) {
+                throw new Exception("Invalid input");
             }
-        } catch (IOException e) {
+
+            // Initialize the solver
+            A_star a_star = new A_star(end);
+            Result output = a_star.solve(start, end);
+
+            // Print the output
+            System.out.println("Time: " + output.getTime() + " ms");
+            System.out.println("Memory: " + output.getMemory() + " KB");
+            System.out.println("Node accessed: " + output.getNodeAccessed());
+            System.out.println("Path: ");
+            for (String word : output.getPath()) {
+                System.out.println(word);
+            }
+
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed

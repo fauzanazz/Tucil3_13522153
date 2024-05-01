@@ -7,19 +7,26 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class MapParser {
-    public static Map<String, List<String>> wordList = new HashMap<String, List<String>>();
+    private static final Logger LOGGER = Logger.getLogger(MapParser.class.getName());
+    public static Map<String, List<String>> wordList = new HashMap<>();
 
     public static boolean isWordExist(String word) {
         return wordList.containsKey(word);
     }
 
+    public static List<String> getWordList(String word) {
+        return wordList.get(word);
+    }
+
     public static void load() {
         wordList = new HashMap<>();
         try {
-            for (int i = 1; i <= 15; i++) {
-                File file = new File("src/main/java/com/mycompany/tucil3_13522164/dict/data" + i + ".txt");
+            for (int i = 2; i <= 15; i++) {
+                File file = new File("src/main/java/tubesstimaif/wordladder/dictionary/data" + i + ".txt");
                 Scanner scanner = new Scanner(file);
                 while (scanner.hasNextLine()) {
                     String temp = scanner.nextLine();
@@ -35,8 +42,7 @@ public class MapParser {
                 scanner.close();
             }
         } catch (FileNotFoundException e) {
-            System.out.println("An error occurred.");
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "An error occurred.", e);
         }
     }
 }

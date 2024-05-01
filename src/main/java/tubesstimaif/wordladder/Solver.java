@@ -9,5 +9,5 @@ package tubesstimaif.wordladder;
  * @author Ojan
  */
 public interface Solver {
-    public Result solve(String start, String end);
+    Result solve(String start, String end);
 }
