@@ -38,4 +38,12 @@ public class Result {
     public int getNodeAccessed(){
         return nodeAccessed;
     }
+
+    static int getExecutionTime(long timeStart) {
+        return (int) ((System.nanoTime() - timeStart) / 1000000);
+    }
+
+    static int getMemoryUsed() {
+        return (int) ((Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1024);
+    }
 }

@@ -213,7 +213,7 @@ public class MainWindowsUI extends javax.swing.JFrame {
 
         // Check if the input is valid
         try {
-            if (!MapParser.isWordExist(start) || !MapParser.isWordExist(end)) {
+            if (MapParser.isWordNotExist(start) || MapParser.isWordNotExist(end)) {
                 throw new Exception("Invalid input");
             }
 

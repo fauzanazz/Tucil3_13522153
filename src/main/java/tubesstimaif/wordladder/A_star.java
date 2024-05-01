@@ -23,9 +23,16 @@ public class A_star implements Solver {
         this.end = end;
         this.nodeAccessed = 0;
     }
-    
+
+    /**
+     * Menyelesaikan word ladder dari start ke end menggunakan algoritma A*
+     * @param start String kata awal
+     * @param end String kata akhir
+     * @return Result yang berisi path, waktu eksekusi, memory yang digunakan, dan node yang diakses
+     */
     @Override
     public Result solve(String start, String end){
+        System.gc(); // Suggest garbage collection
         long startTime = System.nanoTime();
         openList.add(new Node(start));
 
@@ -34,31 +41,41 @@ public class A_star implements Solver {
             closedList.add(current.getWord());
 
             if (current.getWord().equals(end)) {
-                return new Result((int) ((System.nanoTime() - startTime) / 1000000), (int) ((Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1024), getPath(current), nodeAccessed);
+                Result result = new Result((int) ((System.nanoTime() - startTime) / 1000000), (int) ((Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1024), getPath(current), nodeAccessed);
+                current = null;
+                System.gc();
+                return result;
             } else {
-                addToOpen(current);
+                ProcessNode(current);
             }
         }
         return null;
     }
 
+    /**
+     * Mendapatkan path dari node start ke node n
+     * @param n Node yang akan dicari pathnya
+     * @return List of String yang berisi path dari node start ke node n
+     */
     private List<String> getPath(Node n) {
-        List<String> path = new ArrayList<>();
-        path.add(n.getWord());
-        Node parent;
-        while ((parent = n.getParent()) != null) {
-            path.addFirst(parent.getWord());
-            n = parent;
+        LinkedList<String> path = new LinkedList<>();
+        while (n != null) {
+            path.addFirst(n.getWord());
+            n = n.getParent();
         }
         return path;
     }
 
-    private void addToOpen(Node current) {
+    /**
+     * Menambahkan node-node yang dapat diakses dari node current ke openList
+     * @param n Node yang sedang diproses
+     */
+    private void ProcessNode(Node n) {
         nodeAccessed++;
-        List<String> words = MapParser.getWordList(current.getWord());
+        List<String> words = MapParser.getWordList(n.getWord());
         for (String word : words ) {
             if (!closedList.contains(word)) {
-                Node node = new Node(word, current, current.getG() + 1, hammingDistance(word, end));
+                Node node = new Node(word, n, n.getG() + 1, hammingDistance(word, end));
                 openList.add(node);
             }
         }
@@ -80,5 +97,4 @@ public class A_star implements Solver {
         }
         return count;
     }
-
 }

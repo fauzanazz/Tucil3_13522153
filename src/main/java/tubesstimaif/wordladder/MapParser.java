@@ -14,8 +14,8 @@ public class MapParser {
     private static final Logger LOGGER = Logger.getLogger(MapParser.class.getName());
     public static Map<String, List<String>> wordList = new HashMap<>();
 
-    public static boolean isWordExist(String word) {
-        return wordList.containsKey(word);
+    public static boolean isWordNotExist(String word) {
+        return !wordList.containsKey(word);
     }
 
     public static List<String> getWordList(String word) {
