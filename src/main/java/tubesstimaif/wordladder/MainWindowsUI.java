@@ -142,11 +142,6 @@ public class MainWindowsUI extends javax.swing.JFrame {
         });
 
         jButton2.setText("A*");
-        jButton2.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                jButton2MousePressed(evt);
-            }
-        });
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
@@ -154,6 +149,11 @@ public class MainWindowsUI extends javax.swing.JFrame {
         });
 
         jButton3.setText("Greedy BFS");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -214,21 +214,20 @@ public class MainWindowsUI extends javax.swing.JFrame {
         // Check if the input is valid
         try {
             if (MapParser.isWordNotExist(start) || MapParser.isWordNotExist(end)) {
-                throw new Exception("Invalid input");
+                ErrorWindow errorWindow = new ErrorWindow(this, true);
+                errorWindow.setErrorMessage("Invalid input");
+                errorWindow.setVisible(true);
+                return;
             }
 
             // Initialize the solver
-            A_star a_star = new A_star(end);
-            Result output = a_star.solve(start, end);
+            UCS ucs = new UCS();
+            Result output = ucs.solve(start, end);
 
-            // Print the output
-            System.out.println("Time: " + output.getTime() + " ms");
-            System.out.println("Memory: " + output.getMemory() + " KB");
-            System.out.println("Node accessed: " + output.getNodeAccessed());
-            System.out.println("Path: ");
-            for (String word : output.getPath()) {
-                System.out.println(word);
-            }
+            // Show the result in result window
+            ResultWindowUI resultWindow = new ResultWindowUI();
+            resultWindow.setResults(output, end);
+            resultWindow.setVisible(true);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -237,12 +236,69 @@ public class MainWindowsUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
+        start = jTextField3.getText();
+        end = jTextField4.getText();
+
+        // Check if the input is valid
+        try {
+            if (MapParser.isWordNotExist(start) || MapParser.isWordNotExist(end)) {
+                ErrorWindow errorWindow = new ErrorWindow(this, true);
+                errorWindow.setErrorMessage("Invalid input");
+                errorWindow.setVisible(true);
+                return;
+            }
+
+            // Initialize the solver
+            A_star a_star = new A_star(end);
+            Result output = a_star.solve(start, end);
+
+            System.out.println("Path:");
+            for (String s : output.path) {
+                System.out.println(s);
+            }
+
+            // Show the result in result window
+            ResultWindowUI resultWindow = new ResultWindowUI();
+            resultWindow.setResults(output, end);
+            resultWindow.setVisible(true);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    private void jButton2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MousePressed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2MousePressed
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        start = jTextField3.getText();
+        end = jTextField4.getText();
+
+        // Check if the input is valid
+        try {
+            if (MapParser.isWordNotExist(start) || MapParser.isWordNotExist(end)) {
+                ErrorWindow errorWindow = new ErrorWindow(this, true);
+                errorWindow.setErrorMessage("Invalid input");
+                errorWindow.setVisible(true);
+                return;
+            }
+
+            // Initialize the solver
+            GreedyBFS GBFS = new GreedyBFS();
+            Result output = GBFS.solve(start, end);
+
+
+            System.out.println("Path:");
+            for (String s : output.path) {
+                System.out.println(s);
+            }
+
+            // Show the result in result window
+            ResultWindowUI resultWindow = new ResultWindowUI();
+            resultWindow.setResults(output, end);
+            resultWindow.setVisible(true);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
      * @param args the command line arguments

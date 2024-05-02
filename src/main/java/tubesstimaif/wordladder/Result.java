@@ -23,22 +23,6 @@ public class Result {
         this.nodeAccessed = nodeAccessed;
     }
 
-    public String[] getPath() {
-        return path.toArray(new String[0]);
-    }
-
-    public int getTime() {
-        return executionTime;
-    }
-
-    public int getMemory() {
-        return memory;
-    }
-
-    public int getNodeAccessed(){
-        return nodeAccessed;
-    }
-
     static int getExecutionTime(long timeStart) {
         return (int) ((System.nanoTime() - timeStart) / 1000000);
     }
