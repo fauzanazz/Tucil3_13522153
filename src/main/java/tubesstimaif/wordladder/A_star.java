@@ -14,14 +14,11 @@ public class A_star implements Solver {
 
     private final PriorityQueue<Node> openList;
     private final Set<String> closedList;
-    private final String end;
-    private int nodeAccessed;
+    private String end;
 
-    public A_star(String end) {
+    public A_star() {
         this.openList = new PriorityQueue<>(Comparator.comparingDouble(Node::getF));
         this.closedList = new HashSet<>();
-        this.end = end;
-        this.nodeAccessed = 0;
     }
 
     /**
@@ -32,7 +29,11 @@ public class A_star implements Solver {
      */
     @Override
     public Result solve(String start, String end){
-        System.gc(); // Suggest garbage collection
+        this.end = end;
+
+        System.gc();
+        int memoryStart = (int) ((Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1024);
+
         long startTime = System.nanoTime();
         openList.add(new Node(start));
 
@@ -41,7 +42,8 @@ public class A_star implements Solver {
             closedList.add(current.getWord());
 
             if (current.getWord().equals(end)) {
-                Result result = new Result((int) ((System.nanoTime() - startTime) / 1000000), (int) ((Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1024), getPath(current), nodeAccessed);
+                int memoryUsed = Result.getMemoryUsed(memoryStart);
+                Result result = new Result(Result.getExecutionTime(startTime), memoryUsed, getPath(current), closedList.size());
                 current = null;
                 System.gc();
                 return result;
@@ -71,7 +73,6 @@ public class A_star implements Solver {
      * @param n Node yang sedang diproses
      */
     private void ProcessNode(Node n) {
-        nodeAccessed++;
         List<String> words = MapParser.getWordList(n.getWord());
         for (String word : words ) {
             if (!closedList.contains(word)) {

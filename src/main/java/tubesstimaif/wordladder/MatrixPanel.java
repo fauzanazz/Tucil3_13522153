@@ -7,7 +7,7 @@ import java.util.List;
 public class MatrixPanel extends JPanel {
     public MatrixPanel(List<String> strings, String end) {
         int rows = strings.size();
-        int cols = strings.get(0).length();
+        int cols = strings.getFirst().length();
         setLayout(new GridLayout(rows, cols));
 
         for (String str : strings) {

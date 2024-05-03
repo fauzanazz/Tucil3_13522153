@@ -1,0 +1,42 @@
+@options
+@packages
+-encoding
+'UTF-8'
+-protected
+-source
+'22'
+-sourcepath
+'C:/Users/Ojan/Documents/NetBeansProjects/Tucil3_13522153/src/main/java;C:/Users/Ojan/Documents/NetBeansProjects/Tucil3_13522153/target/generated-sources/annotations'
+-author
+-bottom
+'Copyright &#169; 2024. All rights reserved.'
+-charset
+'UTF-8'
+-d
+'C:/Users/Ojan/Documents/NetBeansProjects/Tucil3_13522153/target/apidocs'
+-docencoding
+'UTF-8'
+-doctitle
+'WordLadder 1.0_Finish API'
+-use
+-version
+-windowtitle
+'WordLadder 1.0_Finish API'
+tubesstimaif.wordladder
+C:\Users\Ojan\Documents\NetBeansProjects\Tucil3_13522153\src\main\java = 1714461422058
+C:\Users\Ojan\Documents\NetBeansProjects\Tucil3_13522153\target\generated-sources\annotations = 1714773659485
+C:\Users\Ojan\Documents\NetBeansProjects\Tucil3_13522153\target\apidocs\allclasses-index.html = 1714773668266
+C:\Users\Ojan\Documents\NetBeansProjects\Tucil3_13522153\target\apidocs\allpackages-index.html = 1714773668269
+C:\Users\Ojan\Documents\NetBeansProjects\Tucil3_13522153\target\apidocs\constant-values.html = 1714773667971
+C:\Users\Ojan\Documents\NetBeansProjects\Tucil3_13522153\target\apidocs\element-list = 1714773667895
+C:\Users\Ojan\Documents\NetBeansProjects\Tucil3_13522153\target\apidocs\help-doc.html = 1714773668333
+C:\Users\Ojan\Documents\NetBeansProjects\Tucil3_13522153\target\apidocs\index-all.html = 1714773668315
+C:\Users\Ojan\Documents\NetBeansProjects\Tucil3_13522153\target\apidocs\index.html = 1714773668326
+C:\Users\Ojan\Documents\NetBeansProjects\Tucil3_13522153\target\apidocs\member-search-index.js = 1714773668280
+C:\Users\Ojan\Documents\NetBeansProjects\Tucil3_13522153\target\apidocs\module-search-index.js = 1714773668272
+C:\Users\Ojan\Documents\NetBeansProjects\Tucil3_13522153\target\apidocs\overview-tree.html = 1714773668238
+C:\Users\Ojan\Documents\NetBeansProjects\Tucil3_13522153\target\apidocs\package-search-index.js = 1714773668274
+C:\Users\Ojan\Documents\NetBeansProjects\Tucil3_13522153\target\apidocs\search.html = 1714773668320
+C:\Users\Ojan\Documents\NetBeansProjects\Tucil3_13522153\target\apidocs\serialized-form.html = 1714773668088
+C:\Users\Ojan\Documents\NetBeansProjects\Tucil3_13522153\target\apidocs\tag-search-index.js = 1714773668282
+C:\Users\Ojan\Documents\NetBeansProjects\Tucil3_13522153\target\apidocs\type-search-index.js = 1714773668277

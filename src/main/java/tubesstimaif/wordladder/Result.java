@@ -27,7 +27,7 @@ public class Result {
         return (int) ((System.nanoTime() - timeStart) / 1000000);
     }
 
-    static int getMemoryUsed() {
-        return (int) ((Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1024);
+    static int getMemoryUsed(int memoryStart) {
+        return (int) ((Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1024) - memoryStart;
     }
 }

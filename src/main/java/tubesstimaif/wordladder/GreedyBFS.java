@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Random;
 
 public class GreedyBFS implements Solver {
-    private List<String> result;
+    private final List<String> result;
     private int NodeCount;
 
     public GreedyBFS() {
@@ -16,6 +16,8 @@ public class GreedyBFS implements Solver {
 
     public Result solve(String startWord, String endWord) {
         System.gc();
+        int memoryStart = (int) ((Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1024);
+
         long startTime = System.nanoTime();
 
         int lengthWord = startWord.length();
@@ -29,7 +31,7 @@ public class GreedyBFS implements Solver {
 
             // No Solution
             if (linkingWordList.isEmpty()) {
-                System.out.println("No Solution");
+                System.gc();
                 return null;
             }
 
@@ -38,21 +40,18 @@ public class GreedyBFS implements Solver {
 
             // No Solution
             if (similiarPatternList.isEmpty()) {
-                // Cheat Solution
-                break;
+                System.gc();
+                return null;
             }
 
             // Get Most Similiar
             tempWord = Utils.getMostSimiliar(similiarPatternList, endWord);
         }
 
-
         this.result.add(endWord);
-        int executionTime = (int) ((System.nanoTime() - startTime) / 1000000);
-        int memoryUsed = (int) ((Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1024);
-
+        int memoryUsed = Result.getMemoryUsed(memoryStart);
         System.gc();
-        return new Result(executionTime, memoryUsed, this.result, NodeCount);
+        return new Result(Result.getExecutionTime(startTime), memoryUsed, this.result, NodeCount);
     }
 
 

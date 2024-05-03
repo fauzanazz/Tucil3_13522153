@@ -7,7 +7,6 @@ class UCS implements Solver {
     private final List<List<String>> result;
     private final Map<String,List<String>> hashMap;
     private final Set<String> visited;
-    private int NodeCount;
 
     /**
      * Constructor for UCS
@@ -27,6 +26,7 @@ class UCS implements Solver {
      */
     public Result solve(String start, String end) {
         System.gc();
+        int memoryStart = (int) ((Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1024);
         path.add(new ArrayList<>(Collections.singletonList(start)));
         long timeStart = System.nanoTime();
 
@@ -35,15 +35,25 @@ class UCS implements Solver {
             String currentWord = currentPath.getLast();
 
             if (visited.contains(currentWord)) continue;
-            if (currentWord.equals(end)) result.add(currentPath);
+
+            if (currentWord.equals(end)){
+                result.add(currentPath);
+                break;
+            }
+
             else {
                 visited.add(currentWord);
-                NodeCount += processNextWords(currentWord, currentPath);
+                processNextWords(currentWord, currentPath);
             }
         }
 
-        Result output = new Result(Result.getExecutionTime(timeStart), Result.getMemoryUsed(), getShortestPath(), NodeCount);
-        System.gc();
+        if ( getShortestPath() == null ){
+            System.gc();
+            return null;
+        }
+
+        int memory = Result.getMemoryUsed(memoryStart);
+        Result output = new Result(Result.getExecutionTime(timeStart), memory, getShortestPath(), visited.size());
         return output;
     }
 
@@ -51,16 +61,15 @@ class UCS implements Solver {
      * Process the next words from the current word
      * @param currentWord Current Word
      * @param currentPath Current Path
-     * @return Number of next words processed
      */
-    private int processNextWords(String currentWord, List<String> currentPath) {
+    private void processNextWords(String currentWord, List<String> currentPath) {
         List<String> nextProcessedWords = hashMap.get(currentWord);
         for (String nextWord : nextProcessedWords) {
+            if (visited.contains(nextWord)) continue;
             List<String> newPath = new ArrayList<>(currentPath);
             newPath.add(nextWord);
             path.add(newPath);
         }
-        return nextProcessedWords.size();
     }
 
     /**
