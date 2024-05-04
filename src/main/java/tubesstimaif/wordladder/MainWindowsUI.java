@@ -8,11 +8,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.CompletableFuture;
 
 /**
  *
@@ -26,6 +28,7 @@ public class MainWindowsUI extends javax.swing.JFrame {
     public MainWindowsUI() {
         initComponents();
         update();
+        searchCache.putAll(Parser.load_search());
 
         String[] titles = {
                 "Dying over IF Tubes Project.",
@@ -447,7 +450,7 @@ public class MainWindowsUI extends javax.swing.JFrame {
 
         // Check if the input is valid
         try {
-            if (MapParser.isWordNotExist(start) || MapParser.isWordNotExist(end)) {
+            if (Parser.isWordNotExist(start) || Parser.isWordNotExist(end)) {
                 showErrorWindow("Invalid input");
                 return;
             }
@@ -477,7 +480,7 @@ public class MainWindowsUI extends javax.swing.JFrame {
 
         // Check if the input is valid
         try {
-            if (MapParser.isWordNotExist(start) || MapParser.isWordNotExist(end)) {
+            if (Parser.isWordNotExist(start) || Parser.isWordNotExist(end)) {
                 showErrorWindow("Invalid input");
                 return;
             }
@@ -506,7 +509,7 @@ public class MainWindowsUI extends javax.swing.JFrame {
 
         // Check if the input is valid
         try {
-            if (MapParser.isWordNotExist(start) || MapParser.isWordNotExist(end)) {
+            if (Parser.isWordNotExist(start) || Parser.isWordNotExist(end)) {
                 showErrorWindow("Invalid input");
                 return;
             }
@@ -546,14 +549,13 @@ public class MainWindowsUI extends javax.swing.JFrame {
 
             String first = null;
             String second = null;
-            boolean found = false;
 
-            Solver solve = new A_star();
+            Solver solve = new GreedyBFS();
 
             int counter = 0;
-            while (!found){
-                first = MapParser.getRandomWord(num);
-                second = MapParser.getRandomWord(num);
+            while (true){
+                first = Parser.getRandomWord(num);
+                second = Parser.getRandomWord(num);
 
                 if (first.equals(second)){
                     continue;
@@ -568,7 +570,6 @@ public class MainWindowsUI extends javax.swing.JFrame {
                 }
 
                 if (r != null){
-                    found = true;
                     break;
                 }
 
@@ -581,6 +582,14 @@ public class MainWindowsUI extends javax.swing.JFrame {
 
             jTextField3.setText(first);
             jTextField4.setText(second);
+
+            // Save the search cache to a file
+            try (FileOutputStream fos = new FileOutputStream("searchCache.ser");
+                 ObjectOutputStream oos = new ObjectOutputStream(fos)) {
+                oos.writeObject(searchCache);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
         } catch (NumberFormatException e) {
             showErrorWindow("Input not integer");
@@ -597,8 +606,8 @@ public class MainWindowsUI extends javax.swing.JFrame {
                 return;
             }
 
-            String first = MapParser.getRandomWord(num);
-            String second = MapParser.getRandomWord(num);
+            String first = Parser.getRandomWord(num);
+            String second = Parser.getRandomWord(num);
 
             jTextField3.setText(first);
             jTextField4.setText(second);

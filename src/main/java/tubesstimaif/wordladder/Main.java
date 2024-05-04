@@ -12,7 +12,7 @@ import java.io.IOException;
  */
 public class Main {
     public static void main(String[] args) throws IOException {
-        MapParser.load();
+        Parser.load();
         MainWindowsUI ui = new MainWindowsUI();
         ui.setVisible(true);
     }
