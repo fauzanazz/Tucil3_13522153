@@ -69,7 +69,7 @@ public class A_star implements Solver {
      * @param n Node yang sedang diproses
      */
     private void ProcessNode(Node n) {
-        List<String> words = MapParser.getWordList(n.getWord());
+        List<String> words = Parser.getWordList(n.getWord());
         for (String word : words ) {
             if (!closedList.contains(word)) {
                 Node node = new Node(word, n, n.getG() + 1, OtherAlgorithm.hammingDistance(word, end));
