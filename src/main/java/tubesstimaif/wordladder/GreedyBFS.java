@@ -1,7 +1,6 @@
 package tubesstimaif.wordladder;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 
@@ -17,7 +16,6 @@ public class GreedyBFS implements Solver {
     public Result solve(String startWord, String endWord) {
         System.gc();
         int memoryStart = (int) ((Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1024);
-
         long startTime = System.nanoTime();
 
         int lengthWord = startWord.length();
@@ -99,22 +97,12 @@ public class GreedyBFS implements Solver {
                     return temp;
                 }
             }
-            return resultList.get(new Random().nextInt(resultList.size()));
+            return resultList.getFirst();
         }
 
         public static List<String> getSimiliarPatternList(String pattern, List<String> wordList, List<String> bannedWordList){
             List<String> result = new ArrayList<String>();
             for (String temp : wordList) {
-                if (!bannedWordList.contains(temp) && isPatternMatch(pattern, temp)) {
-                    result.add(temp);
-                }
-            }
-            return result;
-        }
-
-        public static List<String> getSimiliarPatternListFromMap(String pattern, List<String> bannedWordList){
-            List<String> result = new ArrayList<String>();
-            for (String temp : MapParser.wordList.keySet()) {
                 if (!bannedWordList.contains(temp) && isPatternMatch(pattern, temp)) {
                     result.add(temp);
                 }

@@ -44,7 +44,6 @@ public class A_star implements Solver {
             if (current.getWord().equals(end)) {
                 int memoryUsed = Result.getMemoryUsed(memoryStart);
                 Result result = new Result(Result.getExecutionTime(startTime), memoryUsed, getPath(current), closedList.size());
-                current = null;
                 System.gc();
                 return result;
             } else {

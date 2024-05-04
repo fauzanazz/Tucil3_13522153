@@ -4,6 +4,7 @@
  */
 package tubesstimaif.wordladder;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -15,6 +16,13 @@ public class Result {
     public int memory;
     public List<String> path;
     public int nodeAccessed;
+    
+    public Result(){
+        this.executionTime = 0;
+        this.memory = 0;
+        this.path = new ArrayList<>();
+        this.nodeAccessed = 0;
+    }
 
     public Result(int executionTime, int memory, List<String> path, int nodeAccessed){
         this.executionTime = executionTime;

@@ -8,6 +8,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Arrays;
+import java.util.Collections;
 
 /**
  *
@@ -24,6 +26,51 @@ public class MainWindowsUI extends javax.swing.JFrame {
     public MainWindowsUI() {
         initComponents();
         update();
+
+        String[] titles = {
+                "Dying over IF Tubes Project.",
+                "What drops harder than a DJ Beats? Tubes Drop!",
+                "Did you know, starting from 3 May all IF course has Tubes.",
+                "Celebrating! We have 6 Tubes next week!",
+                "What is the best way to spend your weekend? Tubes!",
+                "Did you know, that i love Golang?",
+                "I dont know what to write here, so i just write it.",
+                "The F in IF is Fun!",
+                "I am single",
+        };
+
+        // Convert the array to a list
+        final java.util.List<String>[] titlesList = new java.util.List[]{Arrays.asList(titles)};
+
+        // Shuffle the list
+        Collections.shuffle(titlesList[0]);
+
+        // Convert the list back to an array
+        final String[][] shuffledTitles = {titlesList[0].toArray(new String[0])};
+
+        // Create a timer that fires every 10 seconds
+        Timer titleTimer = new Timer(5000, new ActionListener() {
+            int titleIndex = 0;
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Set the title of the window
+                setTitle(shuffledTitles[0][titleIndex]);
+
+                // Move to the next title in the array
+                titleIndex = (titleIndex + 1) % shuffledTitles[0].length;
+
+                // If we've gone through all the titles, shuffle the array again
+                if (titleIndex == 0) {
+                    titlesList[0] = Arrays.asList(shuffledTitles[0]);
+                    Collections.shuffle(titlesList[0]);
+                    shuffledTitles[0] = titlesList[0].toArray(new String[0]);
+                }
+            }
+        });
+
+        // Start the timer
+        titleTimer.start();
     }
 
     private void update() {
@@ -91,6 +138,7 @@ public class MainWindowsUI extends javax.swing.JFrame {
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Word Ladder is back!");
         setResizable(false);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -245,16 +293,17 @@ public class MainWindowsUI extends javax.swing.JFrame {
         jPanel7.setLayout(jPanel7Layout);
         jPanel7Layout.setHorizontalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel7Layout.createSequentialGroup()
-                .addGap(17, 17, 17)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
+                .addGap(25, 25, 25)
                 .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(14, 14, 14))
+                .addContainerGap())
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel7Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(14, 14, 14)
+                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         jPanel8.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -264,7 +313,7 @@ public class MainWindowsUI extends javax.swing.JFrame {
 
         jPanel9.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        jButton4.setText("Random 4 Words");
+        jButton4.setText("Random Solveable N Words");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton4ActionPerformed(evt);
@@ -388,6 +437,8 @@ public class MainWindowsUI extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField4ActionPerformed
 
+
+
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // Get the start and end from the input text
         start = jTextField3.getText().toUpperCase();
@@ -478,12 +529,43 @@ public class MainWindowsUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // Random 4 Words
-        String first = MapParser.getRandomWord(4);
-        String second = MapParser.getRandomWord(4);
+        try {
+            int num = Integer.parseInt(jTextField1.getText());
 
-        jTextField3.setText(first);
-        jTextField4.setText(second);
+            if (num < 2 || num > 14){
+                showErrorWindow("Input must be >= 2 and < 15");
+                return;
+            }
+            
+            Solver solve = new A_star();
+            Result r = new Result();
+            
+            String first;
+            String second;
+            
+            int counter = 0;
+            while (true){
+                first = MapParser.getRandomWord(num);
+                second = MapParser.getRandomWord(num);
+                r = solve.solve(first, second);
+                
+                if (r != null){
+                    break;
+                }
+                
+                if (counter == 100){
+                    showErrorWindow("Not found after 100 try");
+                    return;
+                }
+                counter++;
+            }
+            
+            jTextField3.setText(first);
+            jTextField4.setText(second);
+            
+        } catch (NumberFormatException e) {
+            showErrorWindow("Input not integer");
+        }
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
