@@ -2,6 +2,14 @@ package tubesstimaif.wordladder;
 
 import java.util.*;
 
+/**
+ * Kelas yang merepresentasikan algoritma Greedy Best First Search untuk menyelesaikan word ladder
+ * Algoritma ini menggunakan priority queue untuk menyimpan node-node yang akan diakses
+ * dan hashset untuk menyimpan node-node yang sudah diakses
+ * Algoritma ini menggunakan fungsi heuristik Hamming Distance untuk menghitung nilai h(n)
+ * @see Solver
+ * @author Ojan
+ */
 public class GreedyBFS implements Solver {
 
     /*
@@ -55,7 +63,7 @@ public class GreedyBFS implements Solver {
      * @param current Node yang sedang diproses
      */
     private void ProcessNode(Node current) {
-        for (String nextWord : MapParser.wordList.get(current.getWord())) {
+        for (String nextWord : Parser.wordList.get(current.getWord())) {
             if (!closedList.contains(nextWord)) {
                 Node nextNode = new Node(nextWord, current, OtherAlgorithm.hammingDistance(current.getWord(), end), 0);
                 openList.add(nextNode);

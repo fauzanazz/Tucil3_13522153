@@ -39,10 +39,10 @@ public class PlayGameUI extends javax.swing.JFrame {
             // Random length from 2 to 14
             int length = (int) (Math.random() * 13) + 2;
 
-            start = MapParser.getRandomWord(length);
-            end = MapParser.getRandomWord(length);
+            start = Parser.getRandomWord(length);
+            end = Parser.getRandomWord(length);
 
-            if (MapParser.isWordNotExist(start) && MapParser.isWordNotExist(end) && !start.equals(end)) {
+            if (Parser.isWordNotExist(start) && Parser.isWordNotExist(end) && !start.equals(end)) {
                 continue;
             }
 
@@ -139,7 +139,7 @@ public class PlayGameUI extends javax.swing.JFrame {
                         sb.append(input.getText());
                     }
 
-                    if (MapParser.isWordNotExist(sb.toString().toUpperCase())) {
+                    if (Parser.isWordNotExist(sb.toString().toUpperCase())) {
                         JOptionPane.showMessageDialog(null, "The word is not in the dictionary!");
                         return;
                     }

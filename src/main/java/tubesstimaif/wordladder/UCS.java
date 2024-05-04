@@ -62,7 +62,7 @@ class UCS implements Solver {
      * @param n Node to be processed
      */
     private void processNode(Node n) {
-        List<String> nextProcessedWords = MapParser.getWordList(n.getWord());
+        List<String> nextProcessedWords = Parser.getWordList(n.getWord());
         for (String nextWord : nextProcessedWords) {
             if (closedNodes.contains(nextWord)) continue;
             Node nextNode = new Node(nextWord, n, 0, 0);

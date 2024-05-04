@@ -4,6 +4,7 @@
  */
 package tubesstimaif.wordladder;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +13,7 @@ import java.util.List;
  * Hasil ini berisi waktu eksekusi, memory yang digunakan, path yang ditemukan, dan node yang diakses
  * @author Ojan
  */
-public class Result {
+public class Result implements Serializable {
     public int executionTime;
     public int memory;
     public List<String> path;

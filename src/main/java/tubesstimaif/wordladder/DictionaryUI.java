@@ -7,7 +7,6 @@ package tubesstimaif.wordladder;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.*;
 import java.util.List;
 import java.util.logging.Level;
@@ -24,7 +23,7 @@ public class DictionaryUI extends JFrame {
      */
     public DictionaryUI() {
         initComponents();
-        dictionary = MapParser.getDictionary();
+        dictionary = Parser.getDictionary();
         PopulateJList();
 
         jScrollPane2.setPreferredSize(new Dimension(400, 200));
