@@ -70,11 +70,7 @@
       </ul>
     </li>
     <li><a href="#usage">Usage</a></li>
-    <li><a href="#roadmap">Roadmap</a></li>
-    <li><a href="#contributing">Contributing</a></li>
-    <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
-    <li><a href="#acknowledgments">Acknowledgments</a></li>
   </ol>
 </details>
 
@@ -93,7 +89,7 @@ This project is a simple program developed in Java. This Programs include solver
 
 ### Built With
 
-* [![Java][Java]][Java-link]
+[![Java][Java]][Java-link]
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -110,18 +106,16 @@ This project is a simple program developed in Java. This Programs include solver
   * MacOS
 
 1. Install the Java Development Kit (JDK). You can download it from the official Oracle website. Make sure to choose the version that matches your operating system.
-  Linux
-    * Java
+  * Linux
       ```sh
-      sudo apt install openjdk-11-jre
+      sudo apt update
+      sudo apt install default-jre
       ```
-  Windows
-    * Java
+  * Windows
       ```sh
       https://www.java.com/en/download/
       ```
-  MacOS
-    * Java
+  * MacOS
       ```sh
       https://www.java.com/en/download/
       ```
@@ -129,20 +123,22 @@ This project is a simple program developed in Java. This Programs include solver
 
 
 2. Set the JAVA_HOME environment variable. This tells your system where to find the JDK.
-    Linux
-  * Java
+  * Linux
     ```sh
     export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
     ```
-  Windows
-  * Java
+  * Windows
     ```sh
     https://mkyong.com/java/how-to-set-java_home-on-windows-10/
     ```
-  MacOS
-  * Java
+  * MacOS
     ```sh
     https://mkyong.com/java/how-to-set-java_home-environment-variable-on-mac-os-x/
+    ```
+
+3. Verify that the JDK is installed correctly by running the following command:
+    ```sh
+    java -version
     ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
