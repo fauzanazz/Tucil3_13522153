@@ -1,5 +1,10 @@
 package tubesstimaif.wordladder;
 
+import java.io.FileInputStream;
+import java.io.ObjectInputStream;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.io.InputStream;
 import java.util.*;
 import java.util.logging.Level;
@@ -12,14 +17,14 @@ import java.util.AbstractMap.SimpleEntry;
  * Struktur data yang dibuat adalah Map<String, List<String>> yang berisi kata-kata
  * dan List<List<SimpleEntry<String, String>>> yang berisi kata-kata dan definisinya
  */
-public class MapParser {
+public class Parser {
 
     /*
         * wordList adalah map yang menyimpan kata-kata yang ada pada file
         * dictionary adalah list yang menyimpan kata-kata dan definisinya
         * LOGGER adalah logger yang digunakan untuk mencatat log
      */
-    private static final Logger LOGGER = Logger.getLogger(MapParser.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(Parser.class.getName());
     public static Map<String, List<String>> wordList = new HashMap<>();
     public static List<List<SimpleEntry<String, String>>> dictionary;
 
@@ -52,6 +57,21 @@ public class MapParser {
     }
 
     /**
+     * Fungsi untuk memasukkan hasil pencarian dari file ke dalam cache
+     * @return hasil pencarian dari file
+     */
+    public static Map<String, Result> load_search() {
+        Map<String, Result> searchCache = new HashMap<>();
+        try (FileInputStream fis = new FileInputStream("searchCache.ser");
+             ObjectInputStream ois = new ObjectInputStream(fis)) {
+            searchCache = (Map<String, Result>) ois.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return searchCache;
+    }
+
+    /**
      * Fungsi untuk mendapatkan seluruh kata yang ada di kamus
      * @return seluruh kata yang ada di kamus
      */
@@ -71,7 +91,7 @@ public class MapParser {
         wordList = new HashMap<>();
         try {
             for (int i = 2; i <= 15; i++) {
-                InputStream in = MapParser.class.getResourceAsStream("/dictionary/data" + i + ".txt");
+                InputStream in = Parser.class.getResourceAsStream("/dictionary/data" + i + ".txt");
                 assert in != null;
                 Scanner scanner = new Scanner(in);
                 while (scanner.hasNextLine()) {
@@ -93,7 +113,7 @@ public class MapParser {
 
         dictionary = new ArrayList<>();
         try {
-            InputStream in = MapParser.class.getResourceAsStream("/dictionary/names.txt");
+            InputStream in = Parser.class.getResourceAsStream("/dictionary/names.txt");
             assert in != null;
             Scanner scanner = new Scanner(in);
             while (scanner.hasNextLine()) {
