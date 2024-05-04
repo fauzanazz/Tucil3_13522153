@@ -151,7 +151,9 @@ Ensure you have Java installed on your computer, and path is set.
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-[![Full Window][FullWindow-screenshot]]()
+<div align="center">
+  <img src="images/FullWindow.png" alt="Main Window">
+</div>
 
 1. Word Ladder Solver
     Solve word ladder using 3 different algorithm
@@ -192,4 +194,3 @@ Project Link: [https://github.com/fauzanazz/Tucil3_13522153](https://github.com/
 [java]: https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white
 [java-link]: https://www.java.com/
 [mainWindow-screenshot]: images/mainWindow.png
-[FullWindow-screenshot]: images/fullWindow.png
