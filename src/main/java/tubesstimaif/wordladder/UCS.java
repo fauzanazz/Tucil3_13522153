@@ -2,20 +2,28 @@ package tubesstimaif.wordladder;
 
 import java.util.*;
 
+/**
+ * UCS Algorithm
+ * This class is used to solve the word ladder using Uniform Cost Search Algorithm
+ * This class implements Solver interface
+ * @see Solver
+ * @author Ojan
+ */
 class UCS implements Solver {
-    private final Queue<List<String>> path;
-    private List<String> result;
-    private final Map<String,List<String>> hashMap;
-    private final Set<String> visited;
+
+    /*
+    * openNodes is a priority queue that stores the nodes that are currently being processed
+    * closedNodes is a set that stores the nodes that have been processed
+     */
+    private final Queue<Node> openNodes;
+    private final Set<String> closedNodes;
 
     /**
      * Constructor for UCS
      */
     public UCS() {
-        this.hashMap = MapParser.wordList;
-        this.visited = new HashSet<>();
-        this.path = new LinkedList<>();
-        this.result = new ArrayList<>();
+        this.closedNodes = new HashSet<>();
+        this.openNodes = new LinkedList<>();
     }
 
     /**
@@ -26,50 +34,39 @@ class UCS implements Solver {
      */
     public Result solve(String start, String end) {
         System.gc();
-
-        int memoryStart = (int) ((Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1024);
-        path.add(new ArrayList<>(Collections.singletonList(start)));
         long timeStart = System.nanoTime();
+        int memoryStart = (int) ((Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1024);
 
-        while (!path.isEmpty()) {
-            List<String> currentPath = path.poll();
-            String currentWord = currentPath.getLast();
+        openNodes.add(new Node(start));
 
-            if (visited.contains(currentWord)) continue;
+        while (!openNodes.isEmpty()) {
+            Node current = openNodes.poll();
 
-            if (currentWord.equals(end)){
-                result = currentPath;
-                break;
+            if (current.getWord().equals(end)){
+                int memory = Result.getMemoryUsed(memoryStart);
+                return new Result(Result.getExecutionTime(timeStart), memory, Node.getPath(current) , closedNodes.size());
             }
 
             else {
-                visited.add(currentWord);
-                processNextWords(currentWord, currentPath);
+                closedNodes.add(current.getWord());
+                processNode(current);
             }
         }
-
-        if (result == null){
-            System.gc();
-            return null;
-        }
-
-        int memory = Result.getMemoryUsed(memoryStart);
-        return new Result(Result.getExecutionTime(timeStart), memory, result, visited.size());
+        
+        System.gc();
+        return null;
     }
 
     /**
-     * Process the next words from the current word
-     * @param currentWord Current Word
-     * @param currentPath Current Path
+     * Process the node by adding the next possible words to the openNodes
+     * @param n Node to be processed
      */
-    private void processNextWords(String currentWord, List<String> currentPath) {
-        List<String> nextProcessedWords = hashMap.get(currentWord);
+    private void processNode(Node n) {
+        List<String> nextProcessedWords = MapParser.getWordList(n.getWord());
         for (String nextWord : nextProcessedWords) {
-            if (visited.contains(nextWord)) continue;
-            List<String> newPath = new ArrayList<>(currentPath);
-            newPath.add(nextWord);
-            path.add(newPath);
+            if (closedNodes.contains(nextWord)) continue;
+            Node nextNode = new Node(nextWord, n, 0, 0);
+            openNodes.add(nextNode);
         }
     }
-    
 }

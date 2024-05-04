@@ -14,7 +14,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
+ * Kelas yang merepresentasikan UI untuk menampilkan kamus
  * @author Ojan
  */
 public class DictionaryUI extends JFrame {
@@ -31,8 +31,12 @@ public class DictionaryUI extends JFrame {
         jScrollPane2.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
     }
 
+    // Variables declaration - do not modify
     private List<AbstractMap.SimpleEntry<String, String>> dictionary = new ArrayList<>();
 
+    /**
+     * Populate the jList1 with the dictionary
+     */
     private void PopulateJList(){
         // Insert all data from dictionary to jList1
         String[] dict = new String[dictionary.size()];
@@ -135,7 +139,7 @@ public class DictionaryUI extends JFrame {
         List<AbstractMap.SimpleEntry<String, String>> answer = new ArrayList<>();
         for (AbstractMap.SimpleEntry<String, String> entry : dictionary) {
             String word = entry.getKey();
-            int distance = getLevenshteinDistance(findQuery, word);
+            int distance = OtherAlgorithm.getLevenshteinDistance(findQuery, word);
             if (distance <= 1) {
                 answer.add(entry);
             }
@@ -143,8 +147,8 @@ public class DictionaryUI extends JFrame {
 
         // Sort array by the Levenshtein distance to the findQuery
         answer.sort((entry1, entry2) -> {
-            int distance1 = getLevenshteinDistance(findQuery, entry1.getKey());
-            int distance2 = getLevenshteinDistance(findQuery, entry2.getKey());
+            int distance1 = OtherAlgorithm.getLevenshteinDistance(findQuery, entry1.getKey());
+            int distance2 = OtherAlgorithm.getLevenshteinDistance(findQuery, entry2.getKey());
             return Integer.compare(distance1, distance2);
         });
 
@@ -155,55 +159,6 @@ public class DictionaryUI extends JFrame {
 
         jList1.setListData(answerArray);
     }//GEN-LAST:event_jButton1ActionPerformed
-
-    /**
-     * Get the Levenshtein Distance between two strings
-     * @param x The first string
-     * @param y The second string
-     * @return The Levenshtein Distance between x and y
-     */
-    static int getLevenshteinDistance(String x, String y) {
-        int[][] dp = new int[x.length() + 1][y.length() + 1];
-
-        for (int i = 0; i <= x.length(); i++) {
-            for (int j = 0; j <= y.length(); j++) {
-                if (i == 0) {
-                    dp[i][j] = j;
-                }
-                else if (j == 0) {
-                    dp[i][j] = i;
-                }
-                else {
-                    dp[i][j] = min(dp[i - 1][j - 1]
-                                    + costOfSubstitution(x.charAt(i - 1), y.charAt(j - 1)),
-                            dp[i - 1][j] + 1,
-                            dp[i][j - 1] + 1);
-                }
-            }
-        }
-
-        return dp[x.length()][y.length()];
-    }
-
-    /**
-     * Get the minimum of numbers
-     * @param numbers List of numbers
-     * @return Minimum number
-     */
-    public static int min(int... numbers) {
-        return Arrays.stream(numbers)
-                .min().orElse(Integer.MAX_VALUE);
-    }
-
-    /**
-     * Cost of substitution
-     * @param a the first character
-     * @param b the second character
-     * @return  0 if a == b, 1 otherwise
-     */
-    private static int costOfSubstitution(char a, char b) {
-        return a == b ? 0 : 1;
-    }
 
 
     /**

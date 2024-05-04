@@ -5,7 +5,8 @@
 package tubesstimaif.wordladder;
 
 /**
- *
+ * Interface Solver
+ * Interface ini digunakan untuk menentukan method yang harus ada pada algoritma yg dibuat
  * @author Ojan
  */
 public interface Solver {

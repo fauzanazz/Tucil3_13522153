@@ -4,6 +4,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
+/**
+ * Kelas yang digunakan untuk membuat panel yang berisi matriks kata
+ * Panel ini digunakan untuk menampilkan kata-kata yang dihasilkan oleh algoritma
+ */
 public class MatrixPanel extends JPanel {
     public MatrixPanel(List<String> strings, String end) {
         int rows = strings.size();

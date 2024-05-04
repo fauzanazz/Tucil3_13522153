@@ -12,7 +12,8 @@ import java.util.Stack;
 import javax.swing.BorderFactory;
 
 /**
- *
+ *  Kelas yang digunakan untuk membuat panel yang berisi matriks kata
+ *  Panel ini digunakan untuk membuat game word ladder
  * @author Ojan
  */
 public class PlayGameUI extends javax.swing.JFrame {
@@ -29,6 +30,9 @@ public class PlayGameUI extends javax.swing.JFrame {
     private String start;
     private String end;
 
+    /**
+     * Inisialisasi game
+     */
     private void InitGame() {
 
         while (true) {
@@ -51,8 +55,12 @@ public class PlayGameUI extends javax.swing.JFrame {
         }
     }
 
+    // Stack to store the inputted words
     private Stack<String> inputStack;
 
+    /**
+     * Inisialisasi untuk input awal
+     */
     private void InitInput() {
         int game_length = start.length();
         int labelWidth = 50;
@@ -112,6 +120,10 @@ public class PlayGameUI extends javax.swing.JFrame {
         jPanel1.addKeyListener(new KeyAdapter() {
             int current = 0;
 
+            /**
+             * Method to handle key typed event
+             * @param e KeyEvent keyboard yang di inputkan
+             */
             public void keyTyped(KeyEvent e) {
                 char keyChar = e.getKeyChar();
 

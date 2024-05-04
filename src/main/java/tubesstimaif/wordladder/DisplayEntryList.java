@@ -5,15 +5,26 @@ import java.util.AbstractMap.SimpleEntry;
 import java.util.List;
 import java.util.ArrayList;
 
+/**
+ * Kelas yang merepresentasikan panel untuk menampilkan daftar kata dan definisi
+ * Kelas ini merupakan turunan dari JPanel
+ * @see JPanel
+ */
 public class DisplayEntryList extends JPanel {
 
-    private JList<String> nameList;
-
+    /**
+     * Constructor untuk DisplayEntryList
+     * @param entries List berisi kata dan definisi
+     * @param nameList JList yang berisi kata
+     */
     public DisplayEntryList(List<EntryWrapper> entries, JList<String> nameList) {
-        this.nameList = nameList;
         createView(entries);
     }
 
+    /**
+     * Membuat view untuk menampilkan daftar kata dan definisi
+     * @param entries List berisi kata dan definisi
+     */
     private void createView(List<EntryWrapper> entries) {
         List<String> definitions = new ArrayList<>();
         for (EntryWrapper entry : entries) {
@@ -27,6 +38,9 @@ public class DisplayEntryList extends JPanel {
         add(definitionScrollPane);
     }
 
+    /**
+     * Kelas yang merepresentasikan wrapper untuk SimpleEntry
+     */
     static class EntryWrapper {
         private final SimpleEntry<String, String> entry;
 

@@ -7,7 +7,7 @@ package tubesstimaif.wordladder;
 import java.io.IOException;
 
 /**
- *
+ * Main class untuk menjalankan program
  * @author Ojan
  */
 public class Main {
