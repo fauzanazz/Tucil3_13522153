@@ -109,7 +109,7 @@ This project is a simple program developed in Java. This Programs include solver
   * Linux
       ```sh
       sudo apt update
-      sudo apt install default-jre
+      sudo apt install openjdk-17-jdk
       ```
   * Windows
       ```sh
@@ -150,14 +150,14 @@ This project is a simple program developed in Java. This Programs include solver
    git clone https://github.com/fauzanazz/Tucil3_13522153.git
     ```
 2. Install Maven
-    Linux
-    ```sh
-    sudo apt install maven
-    ```
-    Windows
-    ```sh
-    https://mkyong.com/maven/how-to-install-maven-in-windows/
-    ```
+    * Linux
+      ```sh
+      sudo apt install maven
+      ```
+    * Windows
+      ```sh
+      https://mkyong.com/maven/how-to-install-maven-in-windows/
+      ```
 3. Cd to the project directory
     ```sh
     cd Tucil3_13522153
