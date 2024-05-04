@@ -1,20 +1,16 @@
 package tubesstimaif.wordladder;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.Scanner;
+import java.io.InputStream;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.AbstractMap.SimpleEntry;
 
 public class MapParser {
 
     private static final Logger LOGGER = Logger.getLogger(MapParser.class.getName());
     public static Map<String, List<String>> wordList = new HashMap<>();
-    public static List<List<String>> dictionary;
+    public static List<List<SimpleEntry<String, String>>> dictionary;
 
     public static boolean isWordNotExist(String word) {
         return !wordList.containsKey(word);
@@ -25,14 +21,14 @@ public class MapParser {
     }
 
     public static String getRandomWord(int length) {
-        List<String> list = dictionary.get(length - 2);
-        return list.get((int) (Math.random() * list.size()));
+        List<SimpleEntry<String, String>> list = dictionary.get(length);
+        return list.get((int) (Math.random() * list.size())).getKey();
     }
 
-    public static List<String> getDictionary() {
-        List<String> output = new ArrayList<>();
-        for (List<String> wordList : dictionary) {
-            output.addAll(wordList);
+    public static List<SimpleEntry<String, String>> getDictionary() {
+        List<SimpleEntry<String, String>> output = new ArrayList<>();
+        for (List<SimpleEntry<String, String>> words : dictionary) {
+            output.addAll(words);
         }
         return output;
     }
@@ -42,8 +38,9 @@ public class MapParser {
         wordList = new HashMap<>();
         try {
             for (int i = 2; i <= 15; i++) {
-                File file = new File("src/main/java/tubesstimaif/wordladder/dictionary/data" + i + ".txt");
-                Scanner scanner = new Scanner(file);
+                InputStream in = MapParser.class.getResourceAsStream("/dictionary/data" + i + ".txt");
+                assert in != null;
+                Scanner scanner = new Scanner(in);
                 while (scanner.hasNextLine()) {
                     String temp = scanner.nextLine();
                     int len = Integer.parseInt(scanner.nextLine());
@@ -57,25 +54,30 @@ public class MapParser {
                 }
                 scanner.close();
             }
-        } catch (FileNotFoundException e) {
+        } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "An error occurred.", e);
         }
 
-
         dictionary = new ArrayList<>();
         try {
-            File file = new File("src/main/java/tubesstimaif/wordladder/dictionary/names.txt");
-            Scanner scanner = new Scanner(file);
+            InputStream in = MapParser.class.getResourceAsStream("/dictionary/names.txt");
+            assert in != null;
+            Scanner scanner = new Scanner(in);
             while (scanner.hasNextLine()) {
-                int len = Integer.parseInt(scanner.nextLine());
-                List<String> list = new ArrayList<>();
-                for (int j = 0; j < len; j++) {
-                    list.add(scanner.nextLine());
+                String line = scanner.nextLine();
+                String[] parts = line.split(",", 2);
+                if (parts.length >= 2) {
+                    String name = parts[0].trim();
+                    String definition = parts[1].trim();
+                    AbstractMap.SimpleEntry<String, String> entry = new AbstractMap.SimpleEntry<>(name, definition);
+                    while (dictionary.size() <= name.length()) {
+                        dictionary.add(new ArrayList<>());
+                    }
+                    dictionary.get(name.length()).add(entry);
                 }
-                dictionary.add(list);
             }
             scanner.close();
-        } catch (FileNotFoundException e) {
+        } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "An error occurred.", e);
         }
     }

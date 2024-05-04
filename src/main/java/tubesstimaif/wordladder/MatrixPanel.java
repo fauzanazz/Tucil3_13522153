@@ -17,6 +17,9 @@ public class MatrixPanel extends JPanel {
                 label.setHorizontalAlignment(JLabel.CENTER);
                 label.setVerticalAlignment(JLabel.CENTER);
 
+                // Set border color
+                label.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+
                 if (i < end.length() && c == end.charAt(i)) {
                     label.setOpaque(true);
                     label.setBackground(Color.GREEN);

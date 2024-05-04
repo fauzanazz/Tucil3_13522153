@@ -4,28 +4,43 @@
  */
 package tubesstimaif.wordladder;
 
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.*;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author Ojan
  */
-public class DictionaryUI extends javax.swing.JFrame {
+public class DictionaryUI extends JFrame {
 
     /**
      * Creates new form DictionaryUI
      */
     public DictionaryUI() {
         initComponents();
-        listOfDict = MapParser.getDictionary().toArray(new String[0]);
+        dictionary = MapParser.getDictionary();
         PopulateJList();
+
+        jScrollPane2.setPreferredSize(new Dimension(400, 200));
+        jScrollPane2.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
     }
 
-    private final String[] listOfDict;
+    private List<AbstractMap.SimpleEntry<String, String>> dictionary = new ArrayList<>();
 
     private void PopulateJList(){
-        // Insert all data from Map Word List to JList
-        jList1.setListData(listOfDict);
+        // Insert all data from dictionary to jList1
+        String[] dict = new String[dictionary.size()];
+        for (int i = 0; i < dictionary.size(); i++) {
+            dict[i] = dictionary.get(i).getKey() + " - " + dictionary.get(i).getValue();
+        }
+
+        jList1.setListData(dict);
     }
 
     /**
@@ -39,14 +54,15 @@ public class DictionaryUI extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jTextField1 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         jList1 = new javax.swing.JList<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Dictionary");
 
-        jTextField1.setText("jTextField1");
+        jLabel1.setText("Search Bar");
 
         jButton1.setText("Find");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -55,28 +71,24 @@ public class DictionaryUI extends javax.swing.JFrame {
             }
         });
 
-        jLabel1.setText("Search Bar");
-
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 322, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton1))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(jTextField1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton1)
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(9, Short.MAX_VALUE)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -97,40 +109,59 @@ public class DictionaryUI extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane2))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 674, Short.MAX_VALUE)
+                        .addContainerGap())
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap())))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 381, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void jButton1ActionPerformed(ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         String findQuery = jTextField1.getText().toUpperCase();
 
-        Set<String> answer = new HashSet<>();
-        for (String word : listOfDict) {
+        List<AbstractMap.SimpleEntry<String, String>> answer = new ArrayList<>();
+        for (AbstractMap.SimpleEntry<String, String> entry : dictionary) {
+            String word = entry.getKey();
             int distance = getLevenshteinDistance(findQuery, word);
-            if (distance <= 1) { // you can adjust this value based on how similar you want the words to be
-                answer.add(word);
+            if (distance <= 1) {
+                answer.add(entry);
             }
         }
 
-        String[] answerArray = answer.toArray(new String[0]);
-        // Sort array by length
-        Arrays.sort(answerArray, Comparator.comparingInt(String::length));
+        // Sort array by the Levenshtein distance to the findQuery
+        answer.sort((entry1, entry2) -> {
+            int distance1 = getLevenshteinDistance(findQuery, entry1.getKey());
+            int distance2 = getLevenshteinDistance(findQuery, entry2.getKey());
+            return Integer.compare(distance1, distance2);
+        });
+
+        String[] answerArray = new String[answer.size()];
+        for (int i = 0; i < answer.size(); i++) {
+            answerArray[i] = answer.get(i).getKey() + " - " + answer.get(i).getValue();
+        }
+
         jList1.setListData(answerArray);
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    /**
+     * Get the Levenshtein Distance between two strings
+     * @param x The first string
+     * @param y The second string
+     * @return The Levenshtein Distance between x and y
+     */
     static int getLevenshteinDistance(String x, String y) {
         int[][] dp = new int[x.length() + 1][y.length() + 1];
 
@@ -154,11 +185,22 @@ public class DictionaryUI extends javax.swing.JFrame {
         return dp[x.length()][y.length()];
     }
 
+    /**
+     * Get the minimum of numbers
+     * @param numbers List of numbers
+     * @return Minimum number
+     */
     public static int min(int... numbers) {
         return Arrays.stream(numbers)
                 .min().orElse(Integer.MAX_VALUE);
     }
 
+    /**
+     * Cost of substitution
+     * @param a the first character
+     * @param b the second character
+     * @return  0 if a == b, 1 otherwise
+     */
     private static int costOfSubstitution(char a, char b) {
         return a == b ? 0 : 1;
     }
@@ -174,25 +216,25 @@ public class DictionaryUI extends javax.swing.JFrame {
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
         try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+            for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(DictionaryUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            Logger.getLogger(DictionaryUI.class.getName()).log(Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(DictionaryUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            Logger.getLogger(DictionaryUI.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(DictionaryUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(DictionaryUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            Logger.getLogger(DictionaryUI.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (UnsupportedLookAndFeelException ex) {
+            Logger.getLogger(DictionaryUI.class.getName()).log(Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
+        EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new DictionaryUI().setVisible(true);
             }
