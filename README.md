@@ -109,23 +109,43 @@ This project is a simple program developed in Java. This Programs include solver
   * Linux
   * MacOS
 
-Linux
-* Java
-  ```sh
-  sudo apt install openjdk-11-jre
-  ```
-Windows
-* Java
-  ```sh
-  https://www.java.com/en/download/
-  ```
-MacOS
-* Java
-  ```sh
-  https://www.java.com/en/download/
-  ```
+1. Install the Java Development Kit (JDK). You can download it from the official Oracle website. Make sure to choose the version that matches your operating system.
+  Linux
+    * Java
+      ```sh
+      sudo apt install openjdk-11-jre
+      ```
+  Windows
+    * Java
+      ```sh
+      https://www.java.com/en/download/
+      ```
+  MacOS
+    * Java
+      ```sh
+      https://www.java.com/en/download/
+      ```
 
-Ensure you have Java installed on your computer, and path is set.
+
+
+2. Set the JAVA_HOME environment variable. This tells your system where to find the JDK.
+    Linux
+  * Java
+    ```sh
+    export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
+    ```
+  Windows
+  * Java
+    ```sh
+    https://mkyong.com/java/how-to-set-java_home-on-windows-10/
+    ```
+  MacOS
+  * Java
+    ```sh
+    https://mkyong.com/java/how-to-set-java_home-environment-variable-on-mac-os-x/
+    ```
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ### Installation
 
@@ -133,20 +153,41 @@ Ensure you have Java installed on your computer, and path is set.
    ```sh
    git clone https://github.com/fauzanazz/Tucil3_13522153.git
     ```
+2. Install Maven
+    Linux
+    ```sh
+    sudo apt install maven
+    ```
+    Windows
+    ```sh
+    https://mkyong.com/maven/how-to-install-maven-in-windows/
+    ```
+3. Cd to the project directory
+    ```sh
+    cd Tucil3_13522153
+    ```
+4. Build the project
+    ```sh
+    mvn clean install
+    ```
+5. Run the project
+    ```sh
+    mvn exec:java
+    ```
 
-2. Compile the program
-    ```sh
-    javac Main.java
-    ```
-3. Run the program
-    ```sh
-    java Main
-    ```
-4. Enjoy the program
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
+### Build
 
+To Build this project you can use maven.
+```sh
+mvn package
+```
+The output jar will be in target folder.
+
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- USAGE EXAMPLES -->
 ## Usage
