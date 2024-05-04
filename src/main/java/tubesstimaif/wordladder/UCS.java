@@ -4,7 +4,7 @@ import java.util.*;
 
 class UCS implements Solver {
     private final Queue<List<String>> path;
-    private final List<List<String>> result;
+    private List<String> result;
     private final Map<String,List<String>> hashMap;
     private final Set<String> visited;
 
@@ -26,6 +26,7 @@ class UCS implements Solver {
      */
     public Result solve(String start, String end) {
         System.gc();
+
         int memoryStart = (int) ((Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1024);
         path.add(new ArrayList<>(Collections.singletonList(start)));
         long timeStart = System.nanoTime();
@@ -37,7 +38,7 @@ class UCS implements Solver {
             if (visited.contains(currentWord)) continue;
 
             if (currentWord.equals(end)){
-                result.add(currentPath);
+                result = currentPath;
                 break;
             }
 
@@ -47,14 +48,13 @@ class UCS implements Solver {
             }
         }
 
-        if ( getShortestPath() == null ){
+        if (result == null){
             System.gc();
             return null;
         }
 
         int memory = Result.getMemoryUsed(memoryStart);
-        Result output = new Result(Result.getExecutionTime(timeStart), memory, getShortestPath(), visited.size());
-        return output;
+        return new Result(Result.getExecutionTime(timeStart), memory, result, visited.size());
     }
 
     /**
@@ -71,12 +71,5 @@ class UCS implements Solver {
             path.add(newPath);
         }
     }
-
-    /**
-     * Get the shortest path from the result
-     * @return List of String containing the shortest path
-     */
-    private List<String> getShortestPath() {
-        return result.stream().min(Comparator.comparingInt(List::size)).orElse(null);
-    }
+    
 }

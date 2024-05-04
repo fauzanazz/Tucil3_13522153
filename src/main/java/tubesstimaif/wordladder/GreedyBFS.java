@@ -3,79 +3,53 @@ package tubesstimaif.wordladder;
 import java.util.*;
 
 public class GreedyBFS implements Solver {
-    private final List<String> result;
-    private int NodeCount;
+
+    private final PriorityQueue<Node> openList;
+    private final Set<String> closedList;
+    private String end;
 
     public GreedyBFS() {
-        this.result = new ArrayList<>();
-        this.NodeCount = 0;
+        this.closedList = new HashSet<>();
+        this.openList = new PriorityQueue<>(Comparator.comparingDouble(Node::getG));
     }
 
-    public Result solve(String startWord, String endWord) {
+    @Override
+    public Result solve(String start, String end) {
         System.gc();
+        this.end = end;
         int memoryStart = (int) ((Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1024);
         long startTime = System.nanoTime();
 
-        String tempWord = startWord;
+        openList.add(new Node(start, null, A_star.hammingDistance(start, end), 0));
 
-        while (!tempWord.equals(endWord)) {
-            this.result.add(tempWord);
+        while (!openList.isEmpty()) {
+            Node current = openList.poll();
 
-            List<String> linkingWordList = MapParser.getWordList(tempWord);
-            NodeCount++;
-
-            if (linkingWordList.isEmpty()) {
-                System.gc();
-                return null;
+            if (current.getWord().equals(end)) {
+                int memoryUsed = Result.getMemoryUsed(memoryStart);
+                return new Result(Result.getExecutionTime(startTime), memoryUsed, getPath(current), closedList.size());
+            } else {
+                closedList.add(current.getWord());
+                ProcessNode(current);
             }
-
-            List<String> similiarPatternList = Utils.getSimiliarPatternList(Utils.getSimiliarPattern(tempWord, endWord), linkingWordList, result);
-
-            if (similiarPatternList.isEmpty()) {
-                System.gc();
-                return null;
-            }
-
-            tempWord = Utils.getMostSimiliar(similiarPatternList, endWord);
         }
-
-        this.result.add(endWord);
-        int memoryUsed = Result.getMemoryUsed(memoryStart);
-        System.gc();
-        return new Result(Result.getExecutionTime(startTime), memoryUsed, this.result, NodeCount);
+        return null;
     }
 
-    public static class Utils {
-        public static String getSimiliarPattern(String word1, String word2){
-            StringBuilder result = new StringBuilder();
-            for (int i = 0; i < word1.length(); i++) {
-                result.append(word1.charAt(i) == word2.charAt(i) ? word1.charAt(i) : "_");
+    private void ProcessNode(Node current) {
+        for (String nextWord : MapParser.wordList.get(current.getWord())) {
+            if (!closedList.contains(nextWord)) {
+                Node nextNode = new Node(nextWord, current, A_star.hammingDistance(current.getWord(), end), 0);
+                openList.add(nextNode);
             }
-            return result.toString();
         }
-
-        public static int getSimiliarity(String word1, String word2){
-            int result = 0;
-            for (int i = 0; i < word1.length(); i++) {
-                if (word1.charAt(i) == word2.charAt(i)) {
-                    result++;
-                }
-            }
-            return result;
+    }
+    private List<String> getPath(Node n) {
+        LinkedList<String> path = new LinkedList<>();
+        while (n != null) {
+            path.addFirst(n.getWord());
+            n = n.getParent();
         }
-
-        public static String getMostSimiliar(List<String> wordList, String word){
-            return wordList.stream().max(Comparator.comparingInt(w -> getSimiliarity(w, word))).orElse("");
-        }
-
-        public static List<String> getSimiliarPatternList(String pattern, List<String> wordList, List<String> bannedWordList){
-            List<String> result = new ArrayList<>();
-            for (String temp : wordList) {
-                if (!bannedWordList.contains(temp) && pattern.equals(getSimiliarPattern(temp, pattern))) {
-                    result.add(temp);
-                }
-            }
-            return result;
-        }
+        return path;
     }
 }

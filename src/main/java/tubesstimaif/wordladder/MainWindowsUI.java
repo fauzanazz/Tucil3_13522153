@@ -10,15 +10,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
 /**
  *
  * @author Ojan
  */
 public class MainWindowsUI extends javax.swing.JFrame {
-
-    private final MapParser mapParser = new MapParser();
-
 
     /**
      * Creates new form MainWindowsUI
@@ -520,6 +520,11 @@ public class MainWindowsUI extends javax.swing.JFrame {
                 return;
             }
 
+            System.out.println("Path:");
+            for (String s : output.path) {
+                System.out.println(s);
+            }
+
             // Show the result in result window
             showResultWindow(output);
 
@@ -528,7 +533,9 @@ public class MainWindowsUI extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton3ActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+    private final Map<String, Result> searchCache = new HashMap<>();
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {
         try {
             int num = Integer.parseInt(jTextField1.getText());
 
@@ -536,37 +543,49 @@ public class MainWindowsUI extends javax.swing.JFrame {
                 showErrorWindow("Input must be >= 2 and < 15");
                 return;
             }
-            
+
+            String first = null;
+            String second = null;
+            boolean found = false;
+
             Solver solve = new A_star();
-            Result r = new Result();
-            
-            String first;
-            String second;
-            
+
             int counter = 0;
-            while (true){
+            while (!found){
                 first = MapParser.getRandomWord(num);
                 second = MapParser.getRandomWord(num);
-                r = solve.solve(first, second);
-                
+
+                if (first.equals(second)){
+                    continue;
+                }
+
+                String searchKey = first + "-" + second;
+                Result r = searchCache.get(searchKey);
+
+                if (r == null) {
+                    r = solve.solve(first, second);
+                    searchCache.put(searchKey, r);
+                }
+
                 if (r != null){
+                    found = true;
                     break;
                 }
-                
-                if (counter == 100){
-                    showErrorWindow("Not found after 100 try");
+
+                if (counter == 1000){
+                    showErrorWindow("Not found after 1000 try");
                     return;
                 }
                 counter++;
             }
-            
+
             jTextField3.setText(first);
             jTextField4.setText(second);
-            
+
         } catch (NumberFormatException e) {
             showErrorWindow("Input not integer");
         }
-    }//GEN-LAST:event_jButton4ActionPerformed
+    }
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
 
