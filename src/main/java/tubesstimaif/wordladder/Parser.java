@@ -87,34 +87,29 @@ public class Parser {
      */
     public static void load() {
         wordList = new HashMap<>();
-        loadWordList();
-        dictionary = new ArrayList<>();
-        loadDictionary();
-    }
-
-    private static void loadWordList() {
         try {
             for (int i = 2; i <= 8; i++) {
                 InputStream in = Parser.class.getResourceAsStream("/dictionary/data" + i + ".txt");
                 assert in != null;
                 Scanner scanner = new Scanner(in);
                 while (scanner.hasNextLine()) {
-                    String word = scanner.nextLine();
+                    String temp = scanner.nextLine();
                     int len = Integer.parseInt(scanner.nextLine());
                     List<String> list = new ArrayList<>();
                     for (int j = 0; j < len; j++) {
                         list.add(scanner.nextLine());
                     }
-                    wordList.putIfAbsent(word, list);
+                    if (!wordList.containsKey(temp)) {
+                        wordList.put(temp, list);
+                    }
                 }
                 scanner.close();
             }
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "An error occurred.", e);
         }
-    }
 
-    private static void loadDictionary() {
+        dictionary = new ArrayList<>();
         try {
             InputStream in = Parser.class.getResourceAsStream("/dictionary/names.txt");
             assert in != null;
@@ -126,19 +121,15 @@ public class Parser {
                     String name = parts[0].trim();
                     String definition = parts[1].trim();
                     AbstractMap.SimpleEntry<String, String> entry = new AbstractMap.SimpleEntry<>(name, definition);
-                    ensureDictionarySize(name.length());
+                    while (dictionary.size() <= name.length()) {
+                        dictionary.add(new ArrayList<>());
+                    }
                     dictionary.get(name.length()).add(entry);
                 }
             }
             scanner.close();
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "An error occurred.", e);
-        }
-    }
-
-    private static void ensureDictionarySize(int size) {
-        while (dictionary.size() <= size) {
-            dictionary.add(new ArrayList<>());
         }
     }
 }
