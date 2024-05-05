@@ -65,9 +65,7 @@ public class Parser {
         try (FileInputStream fis = new FileInputStream("searchCache.ser");
              ObjectInputStream ois = new ObjectInputStream(fis)) {
             searchCache = (Map<String, Result>) ois.readObject();
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
+        } catch (IOException | ClassNotFoundException ignored) {}
         return searchCache;
     }
 

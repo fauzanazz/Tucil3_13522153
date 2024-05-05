@@ -1,6 +1,8 @@
 package tubesstimaif.wordladder;
 
 import javax.sound.sampled.*;
+import java.io.BufferedInputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -20,7 +22,9 @@ public class BackgroundMusic {
     public BackgroundMusic() {
         try {
             for (String filePath : filePaths) {
-                AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(Objects.requireNonNull(getClass().getResourceAsStream(filePath)));
+                InputStream is = Objects.requireNonNull(getClass().getResourceAsStream(filePath));
+                BufferedInputStream bis = new BufferedInputStream(is);
+                AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(bis);
                 Clip clip = AudioSystem.getClip();
                 clip.open(audioInputStream);
                 clip.addLineListener(event -> {
