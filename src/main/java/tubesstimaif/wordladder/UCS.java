@@ -52,9 +52,9 @@ class UCS implements Solver {
                 processNode(current);
             }
         }
-        
-        System.gc();
-        return null;
+
+        int memory = Result.getMemoryUsed(memoryStart);
+        return new Result(Result.getExecutionTime(timeStart), memory, null , closedNodes.size());
     }
 
     /**

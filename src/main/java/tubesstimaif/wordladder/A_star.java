@@ -40,8 +40,8 @@ public class A_star implements Solver {
     @Override
     public Result solve(String start, String end){
         // Setup
-        this.end = end;
         System.gc();
+        this.end = end;
         int memoryStart = (int) ((Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1024);
         long startTime = System.nanoTime();
 
@@ -54,14 +54,13 @@ public class A_star implements Solver {
 
             if (current.getWord().equals(end)) {
                 int memoryUsed = Result.getMemoryUsed(memoryStart);
-                Result result = new Result(Result.getExecutionTime(startTime), memoryUsed, Node.getPath(current), closedList.size());
-                System.gc();
-                return result;
+                return new Result(Result.getExecutionTime(startTime), memoryUsed, Node.getPath(current), closedList.size());
             } else {
                 ProcessNode(current);
             }
         }
-        return null;
+        int memoryUsed = Result.getMemoryUsed(memoryStart);
+        return new Result(Result.getExecutionTime(startTime), memoryUsed, null, closedList.size());
     }
 
     /**

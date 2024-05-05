@@ -31,43 +31,22 @@ public class OtherAlgorithm {
     static int getLevenshteinDistance(String x, String y) {
         int[][] dp = new int[x.length() + 1][y.length() + 1];
 
+        // To check how many characters need to be added to x to make it y
         for (int i = 0; i <= x.length(); i++) {
-            for (int j = 0; j <= y.length(); j++) {
-                if (i == 0) {
-                    dp[i][j] = j;
-                }
-                else if (j == 0) {
-                    dp[i][j] = i;
-                }
-                else {
-                    dp[i][j] = min(dp[i - 1][j - 1]
-                                    + costOfSubstitution(x.charAt(i - 1), y.charAt(j - 1)),
-                            dp[i - 1][j] + 1,
-                            dp[i][j - 1] + 1);
-                }
-            }
+            dp[i][0] = i;
+        }
+        // To check how many characters need to be added to y to make it x
+        for (int j = 0; j <= y.length(); j++) {
+            dp[0][j] = j;
         }
 
+        // Fill the dp table
+        for (int i = 1; i <= x.length(); i++) {
+            for (int j = 1; j <= y.length(); j++) {
+                int substitutionCost = x.charAt(i - 1) == y.charAt(j - 1) ? 0 : 1;
+                dp[i][j] = Math.min(Math.min(dp[i - 1][j - 1] + substitutionCost, dp[i - 1][j] + 1), dp[i][j - 1] + 1);
+            }
+        }
         return dp[x.length()][y.length()];
-    }
-
-    /**
-     * Get the minimum of numbers
-     * @param numbers List of numbers
-     * @return Minimum number
-     */
-    public static int min(int... numbers) {
-        return Arrays.stream(numbers)
-                .min().orElse(Integer.MAX_VALUE);
-    }
-
-    /**
-     * Cost of substitution
-     * @param a the first character
-     * @param b the second character
-     * @return  0 if a == b, 1 otherwise
-     */
-    private static int costOfSubstitution(char a, char b) {
-        return a == b ? 0 : 1;
     }
 }

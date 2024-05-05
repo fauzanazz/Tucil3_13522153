@@ -522,11 +522,6 @@ public class MainWindowsUI extends javax.swing.JFrame {
                 return;
             }
 
-            System.out.println("Path:");
-            for (String s : output.path) {
-                System.out.println(s);
-            }
-
             // Show the result in result window
             showResultWindow(output);
 
@@ -541,8 +536,8 @@ public class MainWindowsUI extends javax.swing.JFrame {
         try {
             int num = Integer.parseInt(jTextField1.getText());
 
-            if (num < 2 || num > 14){
-                showErrorWindow("Input must be >= 2 and < 15");
+            int check = checkNumberInput(num);
+            if (check == 1) {
                 return;
             }
 
@@ -568,7 +563,7 @@ public class MainWindowsUI extends javax.swing.JFrame {
                     searchCache.put(searchKey, r);
                 }
 
-                if (r != null){
+                if (r.path != null){
                     break;
                 }
 
@@ -600,8 +595,8 @@ public class MainWindowsUI extends javax.swing.JFrame {
         try {
             int num = Integer.parseInt(jTextField1.getText());
 
-            if (num < 2 || num > 14){
-                showErrorWindow("Input must be >= 2 and < 15");
+            int check = checkNumberInput(num);
+            if (check == 1) {
                 return;
             }
 
@@ -660,6 +655,14 @@ public class MainWindowsUI extends javax.swing.JFrame {
                 new MainWindowsUI().setVisible(true);
             }
         });
+    }
+
+    private int checkNumberInput(int num) {
+        if (num < 2 || num > 8 ){
+            showErrorWindow("Input must be >= 2 and < 8");
+            return 1;
+        }
+        return 0;
     }
 
     private void showErrorWindow(String message) {

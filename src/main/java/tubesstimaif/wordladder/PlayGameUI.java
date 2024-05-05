@@ -36,8 +36,8 @@ public class PlayGameUI extends javax.swing.JFrame {
     private void InitGame() {
 
         while (true) {
-            // Random length from 2 to 14
-            int length = (int) (Math.random() * 13) + 2;
+            // Random length from 2 to 8
+            int length = (int) (Math.random() * 7) + 2;
 
             start = Parser.getRandomWord(length);
             end = Parser.getRandomWord(length);
@@ -49,7 +49,7 @@ public class PlayGameUI extends javax.swing.JFrame {
             Solver solver = new A_star();
             Result result = solver.solve(start, end);
 
-            if (result != null) {
+            if (result.path != null) {
                 break;
             }
         }

@@ -4,8 +4,7 @@ import java.util.*;
 
 /**
  * Kelas yang merepresentasikan algoritma Greedy Best First Search untuk menyelesaikan word ladder
- * Algoritma ini menggunakan priority queue untuk menyimpan node-node yang akan diakses
- * dan hashset untuk menyimpan node-node yang sudah diakses
+ * Algoritma ini menggunakan hashset untuk menyimpan node-node yang sudah diakses
  * Algoritma ini menggunakan fungsi heuristik Hamming Distance untuk menghitung nilai h(n)
  * @see Solver
  * @author Ojan
@@ -13,11 +12,9 @@ import java.util.*;
 public class GreedyBFS implements Solver {
 
     /*
-     * openList adalah priority queue yang menyimpan node-node yang akan diakses
      * closedList adalah set yang menyimpan node-node yang sudah diakses
      * end adalah kata akhir yang ingin dicapai
      */
-    private final PriorityQueue<Node> openList;
     private final Set<String> closedList;
     private String end;
 
@@ -26,7 +23,6 @@ public class GreedyBFS implements Solver {
      */
     public GreedyBFS() {
         this.closedList = new HashSet<>();
-        this.openList = new PriorityQueue<>(Comparator.comparingDouble(Node::getG));
     }
 
     /**
@@ -42,32 +38,44 @@ public class GreedyBFS implements Solver {
         int memoryStart = (int) ((Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1024);
         long startTime = System.nanoTime();
 
-        openList.add(new Node(start, null, OtherAlgorithm.hammingDistance(start, end), 0));
+        Node current = new Node(start);
 
-        while (!openList.isEmpty()) {
-            Node current = openList.poll();
+        while (true) {
+
+            if (current == null) {
+                int memoryUsed = Result.getMemoryUsed(memoryStart);
+                return new Result(Result.getExecutionTime(startTime), memoryUsed, null, closedList.size());
+            }
 
             if (current.getWord().equals(end)) {
                 int memoryUsed = Result.getMemoryUsed(memoryStart);
                 return new Result(Result.getExecutionTime(startTime), memoryUsed, Node.getPath(current), closedList.size());
+
             } else {
                 closedList.add(current.getWord());
-                ProcessNode(current);
+                current = ProcessNode(current);
             }
+
         }
-        return null;
     }
 
     /**
-     * Menambahkan node-node yang dapat diakses dari node current ke openList
+     * Menambahkan node-node yang dapat diakses dari node current dan mencari node dengan nilai f terkecil
      * @param current Node yang sedang diproses
      */
-    private void ProcessNode(Node current) {
+    private Node ProcessNode(Node current) {
+        PriorityQueue<Node> openList = new PriorityQueue<>(Comparator.comparingDouble(Node::getF));
         for (String nextWord : Parser.wordList.get(current.getWord())) {
             if (!closedList.contains(nextWord)) {
-                Node nextNode = new Node(nextWord, current, OtherAlgorithm.hammingDistance(current.getWord(), end), 0);
-                openList.add(nextNode);
+                Node next = new Node(nextWord, current, OtherAlgorithm.hammingDistance(nextWord, end), 0);
+                openList.add(next);
             }
         }
+
+        if (!openList.isEmpty()) {
+            return openList.poll();
+        }
+
+        return null;
     }
 }

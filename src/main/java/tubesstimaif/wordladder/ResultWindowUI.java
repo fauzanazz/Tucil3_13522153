@@ -30,6 +30,16 @@ public class ResultWindowUI extends javax.swing.JFrame {
         jLabel3.setText("Memory used        : " + r.memory + " KB");
         jLabel4.setText("Node Visit Count  : " + r.nodeAccessed);
 
+        if (r.path == null) {
+            JLabel label = new JLabel("No path found");
+            label.setHorizontalAlignment(JLabel.CENTER);
+            label.setVerticalAlignment(JLabel.CENTER);
+            jPanel2.add(label, BorderLayout.CENTER);
+            jPanel2.revalidate();
+            jPanel2.repaint();
+            return;
+        }
+
         MatrixPanel matrixPanel = new MatrixPanel(r.path, end);
         JScrollPane matrixScrollPane = new JScrollPane(matrixPanel);
         jPanel2.add(matrixScrollPane, BorderLayout.CENTER);

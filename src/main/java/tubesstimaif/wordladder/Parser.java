@@ -90,7 +90,7 @@ public class Parser {
     public static void load() {
         wordList = new HashMap<>();
         try {
-            for (int i = 2; i <= 15; i++) {
+            for (int i = 2; i <= 8; i++) {
                 InputStream in = Parser.class.getResourceAsStream("/dictionary/data" + i + ".txt");
                 assert in != null;
                 Scanner scanner = new Scanner(in);
